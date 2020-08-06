@@ -8,7 +8,19 @@
 .status {
   composes: cell;
 
-  flex: 0 0 60px;
+  flex: 0 0 30px;
+}
+
+.alreadyExistsIcon {
+  width: 20px !important;
+  color: #37bc9b;
+  pointer-events: all;
+}
+
+.exclusionIcon {
+  width: 20px !important;
+  color: $dangerColor;
+  pointer-events: all;
 }
 
 .collection,
@@ -26,6 +38,7 @@
 
 .inCinemas,
 .physicalRelease,
+.digitalRelease,
 .genres {
   composes: cell;
 
@@ -39,16 +52,17 @@
   flex: 0 0 100px;
 }
 
-.ratings {
+.ratings,
+.runtime {
   composes: cell;
 
-  flex: 0 0 80px;
+  flex: 0 0 90px;
 }
 
-.tags {
+.lists {
   composes: cell;
 
-  flex: 1 0 60px;
+  flex: 1 0 110px;
 }
 
 .actions {

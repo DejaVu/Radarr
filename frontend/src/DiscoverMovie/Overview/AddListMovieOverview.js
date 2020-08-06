@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
+import ImportListListConnector from 'Components/ImportListListConnector';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import Popover from 'Components/Tooltip/Popover';
@@ -81,11 +82,11 @@ class AddListMovieOverview extends Component {
       imdbId,
       youTubeTrailerId,
       title,
-      titleSlug,
       folder,
       year,
       overview,
       images,
+      lists,
       posterWidth,
       posterHeight,
       rowHeight,
@@ -105,7 +106,7 @@ class AddListMovieOverview extends Component {
       height: `${posterHeight}px`
     };
 
-    const linkProps = isExisting ? { to: `/movie/${titleSlug}` } : { onPress: this.onPress };
+    const linkProps = isExisting ? { to: `/movie/${tmdbId}` } : { onPress: this.onPress };
 
     const contentHeight = getContentHeight(rowHeight, isSmallScreen);
     const overviewHeight = contentHeight - titleRowHeight;
@@ -144,12 +145,21 @@ class AddListMovieOverview extends Component {
                 {title} { year > 0 ? `(${year})` : ''}
 
                 {
+                  isExisting ?
+                    <Icon
+                      className={styles.alreadyExistsIcon}
+                      name={icons.CHECK_CIRCLE}
+                      size={36}
+                      title={'Already in your Library'}
+                    /> : null
+                }
+                {
                   isExcluded &&
                     <Icon
                       className={styles.exclusionIcon}
                       name={icons.DANGER}
                       size={36}
-                      title='Movie is on Net Import Exclusion List'
+                      title='Movie is on Import Exclusion List'
                     />
                 }
               </Link>
@@ -181,6 +191,12 @@ class AddListMovieOverview extends Component {
                   isDisabled={isExcluded}
                 />
               </div>
+            </div>
+
+            <div className={styles.lists}>
+              <ImportListListConnector
+                lists={lists}
+              />
             </div>
 
             <div className={styles.details}>
@@ -225,7 +241,6 @@ AddListMovieOverview.propTypes = {
   year: PropTypes.number.isRequired,
   overview: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  titleSlug: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
@@ -239,7 +254,12 @@ AddListMovieOverview.propTypes = {
   isExisting: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
+  lists: PropTypes.arrayOf(PropTypes.number).isRequired,
   onSelectedChange: PropTypes.func.isRequired
+};
+
+AddListMovieOverview.defaultProps = {
+  lists: []
 };
 
 export default AddListMovieOverview;

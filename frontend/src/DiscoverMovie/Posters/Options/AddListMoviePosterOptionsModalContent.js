@@ -29,14 +29,16 @@ class AddListMoviePosterOptionsModalContent extends Component {
 
     this.state = {
       size: props.size,
-      showTitle: props.showTitle
+      showTitle: props.showTitle,
+      includeRecommendations: props.includeRecommendations
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
       size,
-      showTitle
+      showTitle,
+      includeRecommendations
     } = this.props;
 
     const state = {};
@@ -47,6 +49,10 @@ class AddListMoviePosterOptionsModalContent extends Component {
 
     if (showTitle !== prevProps.showTitle) {
       state.showTitle = showTitle;
+    }
+
+    if (includeRecommendations !== prevProps.includeRecommendations) {
+      state.includeRecommendations = includeRecommendations;
     }
 
     if (!_.isEmpty(state)) {
@@ -65,6 +71,16 @@ class AddListMoviePosterOptionsModalContent extends Component {
     });
   }
 
+  onChangeOption = ({ name, value }) => {
+    this.setState({
+      [name]: value
+    }, () => {
+      this.props.onChangeOption({
+        [name]: value
+      });
+    });
+  }
+
   //
   // Render
 
@@ -75,7 +91,8 @@ class AddListMoviePosterOptionsModalContent extends Component {
 
     const {
       size,
-      showTitle
+      showTitle,
+      includeRecommendations
     } = this.state;
 
     return (
@@ -86,6 +103,18 @@ class AddListMoviePosterOptionsModalContent extends Component {
 
         <ModalBody>
           <Form>
+            <FormGroup>
+              <FormLabel>Include Radarr Recommendations</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="includeRecommendations"
+                value={includeRecommendations}
+                helpText="Include Radarr recommended movies in discovery view"
+                onChange={this.onChangeOption}
+              />
+            </FormGroup>
+
             <FormGroup>
               <FormLabel>Poster Size</FormLabel>
 
@@ -127,7 +156,9 @@ class AddListMoviePosterOptionsModalContent extends Component {
 AddListMoviePosterOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
   showTitle: PropTypes.bool.isRequired,
+  includeRecommendations: PropTypes.bool.isRequired,
   onChangePosterOption: PropTypes.func.isRequired,
+  onChangeOption: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

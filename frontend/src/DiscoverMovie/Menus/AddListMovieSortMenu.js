@@ -65,6 +65,24 @@ function AddListMovieSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
+          name="digitalRelease"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Digital Release
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="runtime"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Runtime
+        </SortMenuItem>
+
+        <SortMenuItem
           name="ratings"
           sortKey={sortKey}
           sortDirection={sortDirection}

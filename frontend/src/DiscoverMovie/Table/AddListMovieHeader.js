@@ -6,6 +6,7 @@ import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
 import VirtualTableSelectAllHeaderCell from 'Components/Table/VirtualTableSelectAllHeaderCell';
 import { icons } from 'Helpers/Props';
+import AddListMovieTableOptionsConnector from './AddListMovieTableOptionsConnector';
 import styles from './AddListMovieHeader.css';
 
 class AddListMovieHeader extends Component {
@@ -102,6 +103,7 @@ class AddListMovieHeader extends Component {
           isOpen={this.state.isTableOptionsModalOpen}
           columns={columns}
           onTableOptionChange={onTableOptionChange}
+          optionsComponent={AddListMovieTableOptionsConnector}
           onModalClose={this.onTableOptionsModalClose}
         />
       </VirtualTableHeader>

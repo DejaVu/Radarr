@@ -29,14 +29,16 @@ class AddListMovieOverviewOptionsModalContent extends Component {
 
     this.state = {
       size: props.size,
-      showStudio: props.showStudio
+      showStudio: props.showStudio,
+      includeRecommendations: props.includeRecommendations
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
       size,
-      showStudio
+      showStudio,
+      includeRecommendations
     } = this.props;
 
     const state = {};
@@ -47,6 +49,10 @@ class AddListMovieOverviewOptionsModalContent extends Component {
 
     if (showStudio !== prevProps.showStudio) {
       state.showStudio = showStudio;
+    }
+
+    if (includeRecommendations !== prevProps.includeRecommendations) {
+      state.includeRecommendations = includeRecommendations;
     }
 
     if (!_.isEmpty(state)) {
@@ -65,6 +71,16 @@ class AddListMovieOverviewOptionsModalContent extends Component {
     });
   }
 
+  onChangeOption = ({ name, value }) => {
+    this.setState({
+      [name]: value
+    }, () => {
+      this.props.onChangeOption({
+        [name]: value
+      });
+    });
+  }
+
   //
   // Render
 
@@ -75,7 +91,8 @@ class AddListMovieOverviewOptionsModalContent extends Component {
 
     const {
       size,
-      showStudio
+      showStudio,
+      includeRecommendations
     } = this.state;
 
     return (
@@ -86,6 +103,17 @@ class AddListMovieOverviewOptionsModalContent extends Component {
 
         <ModalBody>
           <Form>
+            <FormGroup>
+              <FormLabel>Include Radarr Recommendations</FormLabel>
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="includeRecommendations"
+                value={includeRecommendations}
+                helpText="Include Radarr recommended movies in discovery view"
+                onChange={this.onChangeOption}
+              />
+            </FormGroup>
+
             <FormGroup>
               <FormLabel>Poster Size</FormLabel>
 
@@ -126,7 +154,9 @@ class AddListMovieOverviewOptionsModalContent extends Component {
 AddListMovieOverviewOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
   showStudio: PropTypes.bool.isRequired,
+  includeRecommendations: PropTypes.bool.isRequired,
   onChangeOverviewOption: PropTypes.func.isRequired,
+  onChangeOption: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

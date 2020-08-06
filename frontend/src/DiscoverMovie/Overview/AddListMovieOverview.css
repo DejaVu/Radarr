@@ -32,6 +32,12 @@ $hoverScale: 1.05;
   }
 }
 
+.alreadyExistsIcon {
+  margin-left: 10px;
+  color: #37bc9b;
+  pointer-events: all;
+}
+
 .exclusionIcon {
   margin-left: 10px;
   color: $dangerColor;
@@ -50,8 +56,12 @@ $hoverScale: 1.05;
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   line-height: 32px;
+}
+
+.lists {
+  margin-bottom: 5px;
 }
 
 .title {

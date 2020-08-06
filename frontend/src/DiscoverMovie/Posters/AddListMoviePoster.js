@@ -11,6 +11,7 @@ import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MoviePoster from 'Movie/MoviePoster';
+import AddListMoviePosterInfo from './AddListMoviePosterInfo';
 import styles from './AddListMoviePoster.css';
 
 class AddListMoviePoster extends Component {
@@ -80,14 +81,17 @@ class AddListMoviePoster extends Component {
       year,
       overview,
       folder,
-      titleSlug,
       images,
       posterWidth,
       posterHeight,
       showTitle,
       isExisting,
       isExcluded,
-      isSelected
+      isSelected,
+      showRelativeDates,
+      shortDateFormat,
+      timeFormat,
+      ...otherProps
     } = this.props;
 
     const {
@@ -96,7 +100,7 @@ class AddListMoviePoster extends Component {
       isExcludeMovieModalOpen
     } = this.state;
 
-    const linkProps = isExisting ? { to: `/movie/${titleSlug}` } : { onPress: this.onPress };
+    const linkProps = isExisting ? { to: `/movie/${tmdbId}` } : { onPress: this.onPress };
 
     const elementStyle = {
       width: `${posterWidth}px`,
@@ -185,6 +189,13 @@ class AddListMoviePoster extends Component {
             </div>
         }
 
+        <AddListMoviePosterInfo
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          {...otherProps}
+        />
+
         <AddNewDiscoverMovieModal
           isOpen={isNewAddMovieModalOpen && !isExisting}
           tmdbId={tmdbId}
@@ -217,7 +228,6 @@ AddListMoviePoster.propTypes = {
   overview: PropTypes.string.isRequired,
   folder: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  titleSlug: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
+import ImportListListConnector from 'Components/ImportListListConnector';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
@@ -12,6 +13,7 @@ import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import formatRuntime from 'Utilities/Date/formatRuntime';
 import ListMovieStatusCell from './ListMovieStatusCell';
 import styles from './AddListMovieRow.css';
 
@@ -58,10 +60,11 @@ class AddListMovieRow extends Component {
       imdbId,
       youTubeTrailerId,
       title,
-      titleSlug,
       studio,
       inCinemas,
       physicalRelease,
+      digitalRelease,
+      runtime,
       year,
       overview,
       folder,
@@ -73,6 +76,7 @@ class AddListMovieRow extends Component {
       isExisting,
       isExcluded,
       isSelected,
+      lists,
       onSelectedChange
     } = this.props;
 
@@ -81,7 +85,7 @@ class AddListMovieRow extends Component {
       isExcludeMovieModalOpen
     } = this.state;
 
-    const linkProps = isExisting ? { to: `/movie/${titleSlug}` } : { onPress: this.onAddMoviePress };
+    const linkProps = isExisting ? { to: `/movie/${tmdbId}` } : { onPress: this.onAddMoviePress };
 
     return (
       <>
@@ -112,6 +116,7 @@ class AddListMovieRow extends Component {
                   className={styles[name]}
                   status={status}
                   isExclusion={isExcluded}
+                  isExisting={isExisting}
                   component={VirtualTableRowCell}
                 />
               );
@@ -128,6 +133,24 @@ class AddListMovieRow extends Component {
                   >
                     {title}
                   </Link>
+
+                  {
+                    isExisting ?
+                      <Icon
+                        className={styles.alreadyExistsIcon}
+                        name={icons.CHECK_CIRCLE}
+                        title={'Already in your Library'}
+                      /> : null
+                  }
+
+                  {
+                    isExcluded ?
+                      <Icon
+                        className={styles.exclusionIcon}
+                        name={icons.DANGER}
+                        title={'Movie Excluded From Automatic Add'}
+                      /> : null
+                  }
                 </VirtualTableRowCell>
               );
             }
@@ -162,6 +185,28 @@ class AddListMovieRow extends Component {
                   date={physicalRelease}
                   component={VirtualTableRowCell}
                 />
+              );
+            }
+
+            if (name === 'digitalRelease') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles[name]}
+                  date={digitalRelease}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'runtime') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {formatRuntime(runtime)}
+                </VirtualTableRowCell>
               );
             }
 
@@ -200,6 +245,19 @@ class AddListMovieRow extends Component {
                   className={styles[name]}
                 >
                   {certification}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'lists') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <ImportListListConnector
+                    lists={lists}
+                  />
                 </VirtualTableRowCell>
               );
             }
@@ -276,10 +334,11 @@ AddListMovieRow.propTypes = {
   overview: PropTypes.string.isRequired,
   folder: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
-  titleSlug: PropTypes.string.isRequired,
   studio: PropTypes.string,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
+  runtime: PropTypes.number,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
   certification: PropTypes.string,
@@ -287,12 +346,13 @@ AddListMovieRow.propTypes = {
   isExisting: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
+  lists: PropTypes.arrayOf(PropTypes.number).isRequired,
   onSelectedChange: PropTypes.func.isRequired
 };
 
 AddListMovieRow.defaultProps = {
   genres: [],
-  tags: []
+  lists: []
 };
 
 export default AddListMovieRow;
